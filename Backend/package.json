@@ -1,0 +1,25 @@
+{
+  "name": "globo-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "prestart": "npm run build"
+  },
+  "author": "Felipe Micheletti",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mysql2": "^3.13.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
