@@ -53,11 +53,10 @@ export class VoteService {
 
     static async updateVote(vote_id:number, vote:number): Promise<IVotes[]> {
         const database = new Database;
-console.log(getTodayToDB());
 
-        var cSql = "UPDATE `votes` SET `vote` = ? WHERE `id` = ?;"
+        var cSql = "UPDATE `votes` SET `vote` = ?, updated_at = ? WHERE `id` = ?;"
 
-        await database.update(cSql, [vote, vote_id]);
+        await database.update(cSql, [vote, getTodayToDB(), vote_id]);
 
         return await this.getVotes("id", [ vote_id ]);
     }

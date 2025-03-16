@@ -1,4 +1,5 @@
 import { Database } from '../_class/database';
+import { getTodayToDB } from '../support/support';
 import { IUser } from '../types/user.types';
 
 export class UserService {
@@ -37,9 +38,9 @@ export class UserService {
     static async updateUser(user_id:number, name:string, email:string, password:string, role:string, active:boolean): Promise<IUser[]> {
         const database = new Database;
 
-        var cSql = "UPDATE `users` SET `nome` = ?, `email` = ?, `password` = ?, `role` = ?, `is_active` = ? WHERE `id` = ?;"
+        var cSql = "UPDATE `users` SET `nome` = ?, `email` = ?, `password` = ?, `role` = ?, `is_active` = ?, updated_at = ? WHERE `id` = ?;"
 
-        await database.update(cSql, [name, email, password, role, active, user_id]);
+        await database.update(cSql, [name, email, password, role, active,  getTodayToDB(), user_id]);
 
         return await this.getUser(false, 'id = ?', [ user_id ]);
     }

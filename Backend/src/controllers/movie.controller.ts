@@ -25,7 +25,7 @@ export class MovieController {
         const releaseAtTimestamp = new Date(release * 1000);
         const releaseToSave  = releaseAtTimestamp.toISOString().slice(0, 19).replace('T', ' ');
 
-        movieInfo = await MovieService.updateMovie(user_id, title, director, genre, releaseToSave, synopsis);
+        movieInfo = await MovieService.insertMovie(user_id, title, director, genre, releaseToSave, synopsis);
         var movieCast = await MovieService.insertCast(movieInfo[0].id, cast);
 
         movieInfo[0].cast = movieCast;
@@ -56,8 +56,8 @@ export class MovieController {
         //* Verifica se já não existe um filme com esse nome
         var movieInfo = await MovieService.getMovie('title = ?', [ title ]);
 
-        if (movieInfo.length != 0) {
-            movieInfo[0].cast = MovieService.getMovieCast(movieInfo[0].id);
+        if (movieInfo.length != 0 && movieInfo[0].id != movie_id) {
+            movieInfo[0].cast = await MovieService.getMovieCast(movieInfo[0].id);
             res.status(409).json(movieInfo[0]);
             return;
         }
@@ -71,7 +71,7 @@ export class MovieController {
 
         movieInfo[0].cast = movieCast;
 
-        res.status(201).json(movieInfo);
+        res.status(200).json(movieInfo);
     }
 
     static async deleteMovie(req: Request, res: Response): Promise<void> {

@@ -42,7 +42,7 @@ export class UserController {
 
         var userInfo = await UserService.getUser(false, 'email = ?', [ email ]);
 
-        if (userInfo.length != 0) {
+        if (userInfo.length != 0 && userInfo[0].id != user_id) {
             res.status(409).json(userInfo[0]);
             return;
         }

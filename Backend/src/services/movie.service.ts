@@ -1,4 +1,5 @@
 import { Database } from '../_class/database';
+import { getTodayToDB } from '../support/support';
 import { ICast, IMovie } from '../types/movie.types';
 
 export class MovieService {
@@ -66,9 +67,9 @@ export class MovieService {
     static async updateMovie(movie_id:number, title:string, director:string, genre:string, release:string, synopsis:string): Promise<IMovie[]> {
         const database = new Database;
 
-        var cSql = "UPDATE `movies` SET `title` = ?, `director` = ?, `genre` = ?, `release` = ?, `synopsis` = ? WHERE id = ?;"
+        var cSql = "UPDATE `movies` SET `title` = ?, `director` = ?, `genre` = ?, `release` = ?, `synopsis` = ?, updated_at = ? WHERE id = ?;"
 
-        await database.insert(cSql, [title, director, genre, release, synopsis, movie_id ]);
+        await database.insert(cSql, [title, director, genre, release, synopsis, getTodayToDB(), movie_id ]);
 
         return await this.getMovie('id = ?', [ movie_id ]);
     }
