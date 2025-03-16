@@ -46,4 +46,4 @@ Construir um ambiente de comunicação entre o Frontend e o Backend para o site 
 3. Instalação de dependências tanto para o Front quanto para o Back
 4. Criação do migration utilizando Knex (Ao realizar o migration, ele adiciona um usuário admin com a senha Admin123 para realização dos testes)
 5. Criação das rotas, controllers e tudo para o Backend funcionar corretamente
-6. Documentação em Markdown do backend, com informações para configuração e Postman para testes
+6. Documentação em Markdown do backend, com informações para configuração e Postman para testes (Está na raiz junto com o ERD e a Documentação OpenApi)

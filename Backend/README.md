@@ -15,8 +15,8 @@
 ### mysql2
     - Pacote de consultas no banco mysql
 
-### Configurando o ambiente
-## Arquivo .env
+## Configurando o ambiente
+### Arquivo .env
 Para o funcionamento do servidor de forma correta é nescessário configurar o arquivo .env com as seguintes variáveis
 
 - PORT (Porta do servidor local)
@@ -27,12 +27,12 @@ Para o funcionamento do servidor de forma correta é nescessário configurar o a
 - DB_USER (Nome do usuário do banco de dados)
 - DB_PASSWORD (Senha do usuário do banco de dados)
 
-## Configuração do ambiente
+### Configuração do ambiente
 Assim como em qualquer outro projeto, para configurar todos os pacotes é nescessário executar o 
 
 ```npm i```
 
-## Configuração do Knex
+### Configuração do Knex
 Para a utilização do knex de forma prática, é nescessário rodar o seguinte comando
 
 ```npm install knex -g```
