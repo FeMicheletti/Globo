@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { VoteService } from '../services/vote.service';
 import bcrypt from 'bcrypt';
+import { conflictReturn } from '../support/support';
 
 export class UserController {
     static async getAllUsers(req: Request, res: Response): Promise<void> {
@@ -17,8 +18,8 @@ export class UserController {
         var userInfo = await UserService.getUser(false, 'email = ?', [ email ]);
 
         if (userInfo.length != 0) {
-            res.status(409).json(userInfo[0]);
-            return;
+            // res.status(409).json(userInfo[0]);
+            return conflictReturn(res);
         }
 
         var cryptoPassword = bcrypt.hashSync(password, 10);
@@ -43,15 +44,15 @@ export class UserController {
         var userInfo = await UserService.getUser(false, 'email = ?', [ email ]);
 
         if (userInfo.length != 0 && userInfo[0].id != user_id) {
-            res.status(409).json(userInfo[0]);
-            return;
+            // res.status(409).json(userInfo[0]);
+            return conflictReturn(res);
         }
 
         var cryptoPassword = bcrypt.hashSync(password, 10);
 
         userInfo = await UserService.updateUser(user_id, name, email, cryptoPassword, role, active);
 
-        res.status(201).json(userInfo[0]);
+        res.status(200).json(userInfo[0]);
     }
 
     static async deleteUser(req: Request, res: Response): Promise<void> {

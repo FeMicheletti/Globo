@@ -8,6 +8,10 @@ export function badrequestReturn(res: Response):void {
     res.status(400).json({ error: 'Solicitação inválida. Favor verificar os parâmetros.' });
 }
 
+export function conflictReturn(res: Response):void {
+    res.status(409).json({ error: 'Registro já existente.' });
+}
+
 export function getTodayToDB():string {
     const todayInDB = new Date().toISOString().slice(0, 19).replace('T', ' ');
     return todayInDB;

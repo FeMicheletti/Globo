@@ -1,53 +1,62 @@
 openapi: '3.0.1'
 
 info:
-  title: API Studio VS
-  description: APIs de integração dos sistemas VS
+  title: Globo API
+  description: Backend para o Desafio Técnico Globo
   version: '1.0'
 
-servers:
-  - url: /api/v1
-    description: Servidor Principal
-
 tags:
-  - name: Shoppings
-    description: Operações relacionadas aos Shoppings.
-  - name: Atividades
-    description: Operações relacionadas as atividades.
-  - name: Marcas
-    description: Operações relacionadas as marcas.
-  - name: UPVMs
-    description: Operações relacionadas as UPVM's.
-  - name: Lucs
-    description: Operações relacionadas as LUC's.
-  - name: Propostas
-    description: Operações relacionadas as Propostas.
+  - name: Autenticação
+    description: Operações relacionadas a autenticação
+  - name: Usuários
+    description: Operações relacionadas aos usuários
+  - name: Filmes
+    description: Operações relacionadas aos filmes
+  - name: Votos
+    description: Operações relacionadas aos votos
 
 security:
   - token: []
 
 paths:
-  /shoppings:   #* API de Shoppings
-    get:
-      operationId: getShopping
-      summary: Lista de Shoppings
-      description: Lista todos os shoppings e suas informações
-      security:
-        - token: []
+  #* Autenticação
+  /auth/login:
+    post:
+      summary: Login do usuário
+      description: Realiza o login com o email e senha do usuário
       tags:
-        - Shoppings
+        - Autenticação
+      requestBody:
+        required: true
+        description: Informações para serem validadas no login
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth'
       responses:
         '200':
-          description: Recuperado com sucesso.
+          description: Login realizado com sucesso
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shopping_detailed'
+                $ref: '#/components/schemas/login'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '500':
+          $ref: '#/components/responses/500'
+  /auth/logout:
+    post:
+      summary: Logout do usuário
+      description: Realiza o logout, invalidando o token do usuário
+      tags:
+        - Autenticação
+      security:
+        - token: []
+      responses:
+        '204':
+          description: Logout realizado com sucesso
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -55,55 +64,24 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /atividades:   #* API de Atividades
+  #* Usuários
+  /users:
     get:
-      operationId: getAtividade
-      summary: Lista de atividades
-      description: Lista as informações de todas atividades do plano abrasce.
+      summary: Lista de usuários
+      description: Retorna a lista com todos os usuários (Admin)
       security:
         - token: []
       tags:
-        - Atividades
+        - Usuários
       responses:
         '200':
-          description: Recuperado com sucesso.
+          description: Lista de usuários recuperado com sucesso
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/atividade'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '500':
-          $ref: '#/components/responses/500'
-
-  /marcas:   #* API de Marcas
-    get:
-      operationId: getMarca
-      summary: Lista de marcas
-      description: Lista as informações de todas as marcas.
-      security:
-        - token: []
-      tags:
-        - Marcas
-      responses:
-        '200':
-          description: Recuperado com sucesso.
-          content:
-            application/json:
-              schema:
-                type: object 
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/marca'
+                type: array
+                items:
+                  $ref: '#/components/schemas/users'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -111,123 +89,78 @@ paths:
         '500':
           $ref: '#/components/responses/500'
     post:
-      operationId: postMarca
-      summary: Envia marca
-      description: Cria uma nova marca.
+      summary: Criação de usuário
+      description: Cria um novo usuário (Admin)
       security:
         - token: []
       tags:
-        - Marcas
+        - Usuários
       requestBody:
         required: true
-        description: Valores a serem inseridos na nova marca
+        description: Informações para criação de um novo usuário
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/marca'
-      responses:
-        '201': 
-          description: Marca criada com sucesso
-          content:
-            application/json:
-              schema:
-                type: object 
-                properties:
-                  data:
-                    $ref: '#/components/schemas/marca'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '409':
-          $ref: '#/components/responses/409'
-        '500':
-          $ref: '#/components/responses/500'
-  /marcas/{marca_nome}:
-    parameters:
-      - $ref: "#/components/parameters/marca"
-    put:
-      operationId: putMarca
-      summary: Atualiza marca
-      description: Atualiza uma marca já existente.
-      security:
-        - token: []
-      tags:
-        - Marcas
-      requestBody:
-        required: true
-        description: Valores dos campos a serem atualizados
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/marca'
-      responses:
-        '200':
-          description: Atualizado com sucesso
-          content:
-            application/json:
-              schema:
-                type: object 
-                properties:
-                  data:
-                    $ref: '#/components/schemas/marca'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '409':
-          $ref: '#/components/responses/409'
-        '500':
-          $ref: '#/components/responses/500'
-  /marcas/{marca_nome}/atividades:
-    parameters:
-      - $ref: "#/components/parameters/marca"
-    get:
-      operationId: getAssocMarcaAtv
-      summary: Lista de Associação
-      description: Lista as atividades associadas a marca.
-      security:
-        - token: []
-      tags:
-        - Marcas
-      responses:
-        '200':
-          description: Recuperado com sucesso.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/marca_atividade'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '500':
-          $ref: '#/components/responses/500'
-  /marcas/{marca_nome}/atividades/{atv_cod}:
-    parameters:
-      - $ref: "#/components/parameters/marca"
-      - $ref: "#/components/parameters/atividade"
-    post:
-      operationId: postAssocMarcaAtv
-      summary: Associa Marca x Atividade
-      description: Faz a associação Marca x Atividade
-      security:
-        - token: []
-      tags:
-        - Marcas
+              $ref: '#/components/schemas/users'
       responses:
         '201':
-          description: Associação feita com sucesso.
+          description: Novo usuário criado com sucesso
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/users'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '409':
+          $ref: '#/components/responses/409'
+        '500':
+          $ref: '#/components/responses/500'
+  /users/{user_id}:
+    parameters:
+      - $ref: "#/components/parameters/user"
+    get:
+      summary: Informações do usuário
+      description: Recupera as informações do usuário
+      security:
+        - token: []
+      tags:
+        - Usuários
+      responses:
+        '200':
+          description: Informações recuperadas com sucesso
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/marca_atividade'
+                $ref: '#/components/schemas/users'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '500':
+          $ref: '#/components/responses/500'
+    put:
+      summary: Atualização de usuário
+      description: Atualiza um usuário (Admin)
+      security:
+        - token: []
+      tags:
+        - Usuários
+      requestBody:
+        required: true
+        description: Informações para criação de um novo usuário
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users'
+      responses:
+        '200':
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/users'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -237,23 +170,15 @@ paths:
         '500':
           $ref: '#/components/responses/500'
     delete:
-      operationId: deleteAssocMarcaAtv
-      summary: Deleção da associação
-      description: Deleta a associação da Marca x Atividade
+      summary: Deleção do usuário
+      description: Deleta todas as informações do usuário (Admin)
       security:
         - token: []
       tags:
-        - Marcas
+        - Usuários
       responses:
-        '200':
-          description: Deletado com sucesso
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/marca_atividade'
+        '204':
+          description: Usuário deletado com sucesso.
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -261,150 +186,159 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /shoppings/{shopping_cod}/upvms:   #* API de UPVMs
-    parameters:
-      - $ref: "#/components/parameters/shopping"
+  #* Filmes
+  /movies:
     get:
-      operationId: getUpvm
-      summary: Lista da UPVM
-      description: Lista de informações sobre a UPVM
+      summary: Lista de filmes
+      description: Retorna a lista com todos os filmes (Admin)
       security:
         - token: []
       tags:
-        - UPVMs
+        - Filmes
       responses:
         '200':
-          description: Recuperado com sucesso.
+          description: Lista dos filmes recuperado com sucesso
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/upvm'
+                type: array
+                items:
+                  $ref: '#/components/schemas/movies'
         '400':
           $ref: '#/components/responses/400'
         '401':
           $ref: '#/components/responses/401'
         '500':
           $ref: '#/components/responses/500'
-  /shoppings/{shopping_cod}/upvms/{upvm_cod}:
-    parameters:
-      - $ref: "#/components/parameters/shopping"
-      - $ref: "#/components/parameters/upvm"
-      - $ref: "#/components/parameters/comp"
-    get:
-      operationId: getUpvmVal
-      summary: Lista de valores UPVM
-      description: Lista dos valores da UPVM mensal.
-      security:
-        - token: []
-      tags:
-        - UPVMs
-      responses:
-        '200':
-          description: Recuperado com sucesso.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/upvm_val'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '500':
-          $ref: '#/components/responses/500'
-
-  /shoppings/{shopping_cod}/lucs:   #* API de LUCs
-    parameters:
-      - $ref: "#/components/parameters/shopping"
-    get:
-      operationId: getLuc
-      summary: Lista das LUC's.
-      description: Lista das LUC's com as suas informações.
-      security:
-        - token: []
-      tags:
-        - Lucs
-      responses:
-        '200':
-          description: Recuperado com sucesso.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/luc'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '500':
-          $ref: '#/components/responses/500'
-
-  /propostas/{proposta_id}: #* API de Propostas
-    parameters:
-      - $ref: "#/components/parameters/proposta"
-    get:
-      operationId: getProposta
-      summary: Lista a proposta
-      description: Lista uma proposta com suas infromações.
-      security:
-        - token: []
-      tags:
-        - Propostas
-      responses:
-        '200':
-          description: Recuperado com sucesso.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/proposta'
-        '400':
-          $ref: '#/components/responses/400'
-        '401':
-          $ref: '#/components/responses/401'
-        '500':
-          $ref: '#/components/responses/500'
-  /propostas:   
     post:
-      operationId: postProposta
-      summary: Envia proposta
-      description: Cria uma nova proposta.
+      summary: Criação de filme
+      description: Cria um novo filme (Admin)
       security:
         - token: []
       tags:
-        - Propostas
+        - Filmes
       requestBody:
         required: true
-        description: Valores a serem inseridos na nova proposta
+        description: Informações para criação de um novo filme
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/proposta'
+              $ref: '#/components/schemas/movie_cast'
       responses:
         '201':
-          description: Proposta criada com sucesso
+          description: Novo usuário criado com sucesso
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/movie_cast'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '409':
+          $ref: '#/components/responses/409'
+        '500':
+          $ref: '#/components/responses/500'
+  /movies/{movie_id}:
+    parameters:
+      - $ref: "#/components/parameters/movie"
+    get:
+      summary: Informações do filme
+      description: Recupera as informações do filme
+      security:
+        - token: []
+      tags:
+        - Filmes
+      responses:
+        '200':
+          description: Informações recuperadas com sucesso
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/proposta'
+                $ref: '#/components/schemas/movie_cast'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '500':
+          $ref: '#/components/responses/500' 
+    put:
+      summary: Atualização de filmes
+      description: Atualiza um filme (Admin)
+      security:
+        - token: []
+      tags:
+        - Filmes
+      requestBody:
+        required: true
+        description: Informações para atualização de um filme
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/movie_cast'
+      responses:
+        '200':
+          description: Informações atualizadas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movie_cast'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '409':
+          $ref: '#/components/responses/409'
+        '500':
+          $ref: '#/components/responses/500' 
+    delete:
+      summary: Deleção de filme
+      description: Deleta todas as informações referente ao filme (Admin)
+      security:
+        - token: []
+      tags:
+        - Filmes
+      responses:
+        '204':
+          description: Filme deletado com sucesso
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '500':
+          $ref: '#/components/responses/500'
+      
+  #* Votos
+  /movies/{movie_id}/vote:
+    parameters:
+      - $ref: "#/components/parameters/movie"
+    put:
+      summary: Realiza/Atualiza um voto
+      description: Realiza ou atualiza o voto de um filme
+      security:
+        - token: []
+      tags:
+        - Votos
+      requestBody:
+        required: true
+        description: Informação do voto do usuário
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vote'
+      responses:
+        '201':
+          description: Voto salvo com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vote'
+        '200':
+          description: Voto atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vote'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -417,7 +351,7 @@ components:
     token:
       type: apiKey
       name: Authorization
-      description: Token de autorização
+      description: Token de autorizaÃ§Ã£o
       in: header
 
   responses:
@@ -434,7 +368,7 @@ components:
                 example: Solicitação inválida. Favor verificar os parâmetros.
     #* Unauthorized
     '401':
-      description: Unauthorized
+      description: Não autorizado
       content:
         application/json:
           schema:
@@ -443,9 +377,9 @@ components:
               error:
                 type: string
                 example: Operação não autorizada
-    #* Unauthorized
+    #* Conflict
     '409':
-      description: Conflict
+      description: Conflito
       content:
         application/json:
           schema:
@@ -456,7 +390,7 @@ components:
                 example: Registro já existente.
     #* Internal Server Error
     '500':
-      description: Internal Server Error
+      description: Erro interno do servidor
       content:
         application/json:
           schema:
@@ -467,851 +401,260 @@ components:
                 example: Ocorreu um erro interno
 
   parameters:
-    #* Parametro do marca_nome
-    marca:
-      name: marca_nome
+    user:
+      name: user_id
       in: path
-      description: Nome da Marca
-      required: true
-      schema:
-        type: string
-      example:
-        Renner
-    #* Parametro do atv_cod
-    atividade:
-      name: atv_cod
-      in: path
-      description: Código da Atividade
-      required: true
-      schema:
-        type: string
-      example:
-        "1.18"
-    #* Parametro do shopping_cod
-    shopping:
-      name: shopping_cod
-      in: path
-      description: Codigo do Shopping
-      required: true
-      schema:
-        type: string
-      example:
-        5120-fe00-6b75-0079-2b07
-    #* Parametro do upvm_cod
-    upvm:
-      name: upvm_cod
-      in: path
-      description: Codigo da UPVM
-      required: true
-      schema:
-        type: string
-      example:
-        '01'
-    #* Parametro do comp
-    comp:
-      name: comp
-      in: query
-      description: Competência de referencia<br/>Passar como int. <br/>Podendo ser YYYY ou YYYYMM.
+      description: Id do usuário
       required: true
       schema:
         type: integer
       example:
-        202312
-    #* Parametro do luc_cod
-    luc:
-      name: luc_cod
+        1
+
+    movie:
+      name: movie_id
       in: path
-      description: Codigo da LUC
-      required: true
-      schema:
-        type: string
-      example:
-        108Q
-    #* Parametro do proposta_id
-    proposta:
-      name: proposta_id
-      in: path
-      description: ID da Proposta
+      description: Id do filme
       required: true
       schema:
         type: integer
       example:
-        152
+        1
 
   schemas:
-    #* Corpo Shopping
-    shopping:
-      title: Shopping
+    auth: 
+      title: Autenticação
       type: object
       properties:
-        shopping_cod:
+        email:
           type: string
-          description: Codigo do Shopping
-          maxLength: 24
-          example: 5120-fe00-6b75-0079-2b07
-        shopping_nome:
+          description: Email do usuário
+          maxLength: 100
+          example: 'admin@example.com'
+        password:
           type: string
-          description: Nome do Shopping
-          maxLength: 50
-          example: Shopping Nova America
-        shopping_sigla:
-          type: string
-          description: Sigla do Shopping
-          maxLength: 5
-          example: SNA
-    #* Corpo Avançado Shopping
-    shopping_detailed:
-      title: Shopping Detalhado
-      type: object
-      properties:
-        shopping_cod:
-          type: string
-          description: Codigo do Shopping
-          maxLength: 24
-          example: 5120-fe00-6b75-0079-2b07
-        shopping_nome:
-          type: string
-          description: Nome do Shopping
-          maxLength: 50
-          example: Shopping Nova America
-        shopping_sigla:
-          type: string
-          description: Sigla do Shopping
-          maxLength: 5
-          example: SNA
-        shopping_abl: 
-          type: number
-          description: Valor total de ABL do Shopping
-          example: 125000.10
-        shopping_tot_lucs: 
-          type: integer
-          description: Quantidade de LUC's do Shopping
-          example: 685
-    #* Corpo Atividade
-    atividade:
-      title: Atividade
-      type: object
-      properties:
-        atv_cod:
-          type: string
-          description: Codigo da Atividade
-          maxLength: 20
-          example: '1.18'
-        atv_nome:
-          type: string
-          description: Nome da Atividade
-          maxLength: 30
-          readOnly: true
-          example: Outros
-        atv_nome_completo:
-          type: string
-          description: Nome completo da Atividade
-          maxLength: 96
-          readOnly: true
-          example: LOJAS ÂNCORAS - Outros
-    #* Corpo Basico da Marca
-    marca:
-      title: Marca
-      type: object
-      properties:
-        marca_nome:
-          type: string
-          description: Nome da Marca
-          maxLength: 50
-          example: Exemplo 1
-        marca_mnemonico:
-          type: string
-          description: Mnemonico da Marca
-          maxLength: 8
-          example: EX1
-        marca_ativa:
-          type: boolean
-          description: Status da Marca
-          example: true
-    #* Corpo da Associação Marca X Atividade
-    marca_atividade:
-      title: Atividade da Marca
-      allOf:
-        - $ref: '#/components/schemas/marca'
-        - type: object
-          properties:
-            marca_atv_assoc:
-              type: array
-              items:
-                $ref: '#/components/schemas/atividade'
-    #* Corpo Basico da UPVM
-    upvm:
-      title: UPVM
-      type: object
-      properties:
-        upvm_cod:
-          type: string
-          description: Codigo da UPVM
-          maxLength: 2
-          example: '00'
-        upvm_nome:
-          type: string
-          description: Nome da UPVM
-          maxLength: 50
-          readOnly: true
-          example: 'INCC'
-        upvm_natureza:
-          type: string
-          description: >
-            Natureza da UPVM
-              * `M` - Moeda <br/><br/>
-              * `V` - Variação <br/><br/>
-              * `C` - Calculada <br/><br/>
-          enum:
-            - M
-            - V
-            - C
-          maxLength: 1
-          readOnly: true
-          example: 'M'
-    #* Corpo dos Valores da UPVM
-    upvm_val:
-      title: Valores da UPVM
-      type: object
-      properties:
-        ano:
-          type: integer
-          description: Ano do Valor da UPVM
-          example: 2023
-        mes:
-          type: integer
-          description: Mes do Valor da UPVM
-          example: 11
-        upvm_valor:
-          type: number
-          description: Valor da UPVM
-          example: 1.00000001
-    #* Corpo da LUC
-    luc:
-      title: LUC
-      type: object
-      properties:
-        luc_cod:
-          type: string
-          description: Codigo da LUC
-          maxLength: 10
-          example: '041'
-        luc_ativa:
-          type: boolean
-          description: Status da LUC
-          example: true
-        luc_abl: 
-          type: number
-          description: Area Bruta Locavel da LUC
-          example: 2000.01
-        luc_frente: 
-          type: number
-          description: Frente (m²) da LUC
-          example: 2.1
-        info_fat:
-          type: object
-          properties:
-            luc_encargo_crd:
-              type: number
-              description: Valor Coeficiente de Rateio da LUC
-              example: 0.12222
-        ult_loc:
-          type: object
-          properties:
-            con_cod: 
-              type: string
-              description: Codigo do Contrato
-              maxLength: 5
-              example: '18121'
-            data_ini: 
-              type: string
-              description: Data de Inicio da Locação (YYYY-MM-DD)
-              example: '2007-10-02'
-            data_fin: 
-              type: string
-              description: Data de Fim da Locação (YYYY-MM-DD)
-              example: '2012-10-02'
-    #* Corpo da Proposta
-    proposta:
-      title: Proposta
-      type: object
-      properties:
-        proposta_id:
-          type: integer
-          description: ID da Proposta
-          readOnly: true
-          example: 152
-        shopping_cod:
-          type: string
-          description: Codigo do Shopping
-          maxLength: 24
+          description: Senha do usuário
           writeOnly: true
-          example: 5120-fe00-6b75-0079-2b07
-        data_locacao_ini:
+          maxLength: 100
+          example: 'Admin123'
+
+    login: 
+      title: Login
+      type: object
+      properties:
+        token:
           type: string
-          description: Data de Inicio de Locação (YYYY-MM-DD)
-          example: '2003-05-16'
-        data_locacao_fin:
-          type: string
-          description: Data de Fim de Locação (YYYY-MM-DD)<br/><i>Para informar contrato com prazo indeterminado, informar o valor zerado (0)</i>
-          example: '2025-05-15'
-        data_prev_assinatura:
-          type: string
-          description: Previsão de Assinatura (YYYY-MM-DD)
-          example: '2003-05-16'
-        data_inauguracao:
-          type: string
-          description: Data da Inauguração (YYYY-MM-DD)
-          example: '2003-05-16'
-        proposta_obs:
-          type: string
-          description: Observação da Proposta
-          example: Proposta não informa venda
-        status:
-          type: object
+          description: Token JWT autenticado
+          maxLength: 255
+          example: "Token JWT"
+    
+    users:
+      title: Usuário
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do usuário
           readOnly: true
-          properties:
-            status:
-              type: string
-              description: > 
-                Status da Proposta
-                  * `Q` - Na fila para sincronização <br/><br/>
-                  * `D` - Erro na Sincronização <br/><br/>
-                  * `I` - Importado no Aprovações <br/><br/>
-                  * `M` - Em manutenção no Aprovações <br/><br/>
-                  * `L` - Liberado para aprovação <br/><br/>
-                  * `A` - Aprovado <br/><br/>
-                  * `E` - Enviado para o Faturamento <br/><br/>
-                  * `U` - Recusado <br/><br/>
-                  * `R` - Rejeitado <br/><br/>
-                  * `S` - Solicitação de cancelamento <br/><br/>
-                  * `C` - Cancelado <br/><br/>
-              enum: 
-                - Q
-                - D
-                - I
-                - M
-                - L
-                - A
-                - E
-                - U
-                - R
-                - S
-                - C
-              maxLength: 1
-              example: A
-            con_cod:
-              type: string
-              description: Numero do Contrato gerado
-              maxLength: 5
-              example: '00010'
-            mensagem:
-              type: string
-              description: Motivo do Status da Proposta
-              example: Recusado por estar incoerente
-        marca:
-          $ref: "#/components/schemas/marca_proposta"
-        lucs:
+          example: 1
+        nome:
+          type: string
+          description: Nome do usuário
+          maxLength: 100
+          example: 'Admin'
+        email:
+          type: string
+          description: Email do usuário
+          maxLength: 100
+          example: 'admin@example.com'
+        password:
+          type: string
+          description: Senha do usuário
+          writeOnly: true
+          maxLength: 100
+          example: 'Admin123'
+        role:
+          type: string
+          description: >
+            Cargo do usuário
+              * `user` - Usuário normal <br/><br/>
+              * `admin` - Usuário administrador <br/><br/>
+          enum:
+            - user
+            - admin
+          maxLength: 5
+          example: admin
+        is_active:
+          type: integer
+          description: Status do usuário
+          example: 1
+        created_at:
+          type: string
+          description: Data de criação do usuário
+          readOnly: true
+          example: ''
+        updated_at:
+          type: string
+          description: Data da última atualização do usuário
+          readOnly: true
+          example: ''
+
+    movies:
+      title: Filmes
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do filme
+          readOnly: true
+          example: 1
+        created_by:
+          type: integer
+          description: ID do usuário que criou esse registro
+          readOnly: true
+          example: 1
+        title: 
+          type: string
+          description: Titulo do filme
+          maxLength: 255
+          example: 'Titulo do Filme'
+        director:
+          type: string
+          description: Diretor do filme
+          maxLength: 100
+          example: 'Diretor do filme'
+        genre:
+          type: string
+          description: Genêro do filme
+          maxLength: 100
+          example: 'Ação'
+        release:
+          type: integer
+          description: Data de lançamento do filme (Em unix timestamp)
+          example: 1579280447
+        synopsis:
+          type: string
+          description: Sinopse do filme
+          example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        user_vote:
+          type: integer
+          description: Voto do usuário (de 0 a 4)
+          readOnly: true
+          example: 4
+        vote_avarage:
+          type: integer
+          description: Média de votos dos usuários
+          readOnly: true
+          example: 3.6
+        created_at:
+          type: string
+          description: Data de criação do filme
+          readOnly: true
+          example: ''
+        updated_at:
+          type: string
+          description: Data de atualização do filme
+          readOnly: true
+          example: ''
+
+    movie_cast:
+      title: Filmes com o elenco
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do filme
+          readOnly: true
+          example: 1
+        created_by:
+          type: integer
+          description: ID do usuário que criou esse registro
+          readOnly: true
+          example: 1
+        title: 
+          type: string
+          description: Titulo do filme
+          maxLength: 255
+          example: 'Titulo do Filme'
+        director:
+          type: string
+          description: Diretor do filme
+          maxLength: 100
+          example: 'Diretor do filme'
+        genre:
+          type: string
+          description: Genêro do filme
+          maxLength: 100
+          example: 'Ação'
+        release:
+          type: integer
+          description: Data de lançamento do filme (Em unix timestamp)
+          example: 1579280447
+        synopsis:
+          type: string
+          description: Sinopse do filme
+          example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        cast:
           type: array
           items:
-            $ref: "#/components/schemas/luc_ocupacao"
-        atividades:
-          $ref: "#/components/schemas/atividade"
-        info:
-          type: object
-          properties:
-            tipo_propriedade:
-              type: string
-              description: >
-                Tipo da Propriedade. Será utilizado para definição do subtipo de LUC Virtual (Caso exista LUC Virtual, este campo será obrigatório).
-                  * `MR` - Merchandising <br/><br/>
-                  * `FE` - Feiras e Eventos <br/><br/>
-                  * `PA` - Painel <br/><br/>
-                  * `PO` - Popup <br/><br/>
-              enum:
-                - MR
-                - FE
-                - PA
-                - PO
-              maxLength: 2
-              example: MR
-            luc_virtual_abl:
-              type: number
-              description: ABL da LUC Virtual<br/>Para criação de uma LUC Virtual, informar a ABL maior ou igual a 0.<br/>Caso não haja nescessidade de criação da LUC Virtual, não enviar este objeto.
-              example: 0
-            param:
-              type: object
-              properties:
-                crd:
-                  type: number
-                  description: Coeficiente de Rateio
-                  example: 6.447500001
-            reajuste:
-              type: object
-              properties:
-                data_base:
-                  type: string
-                  description: Data Base de Reajuste (YYYY-MM-DD)<br/>Para propostas de mídia, informar a data de início de locação do contrato.
-                  example: '2003-05-16'
-                upvm:
-                  $ref: "#/components/schemas/upvm"
-            alumin:
-              type: array
-              items:
-                type: object
-                properties:
-                  tipo_cobranca:
-                    type: string
-                    description: >
-                      Tipo de Cobrança do Valor da Faixa
-                        * `M` - Mensal <br/><br/>
-                        * `P` - Correspondente a todo período <br/><br/>
-                    enum:
-                      - M
-                      - P
-                    maxLength: 1
-                    example: M
-                  valor:
-                    type: number
-                    description: Valor do Aluguel Mínimo da Faixa (valor integral sem desconto)
-                    example: 1478.52
-                  valor_desc:
-                    type: number
-                    description: Valor do Aluguel Mínimo com Desconto da Faixa (Se não houver desconto, informar o mesmo valor integral da faixa)
-                    example: 1374.24
-                  data_ini:
-                    type: string
-                    description: Data de Inicio da Faixa (YYYY-MM-DD)
-                    example: '2003-05-16'
-                  data_fin:
-                    type: string
-                    description: Data de Fim da Faixa (YYYY-MM-DD)</br><i>Quando o contrato possui prazo indeterminado, a faixa de aluguel mínimo também deve possuir.<br/><i>Para informar faixa com prazo indeterminado, informar o valor zerado (0).</i>
-                    example: '2025-05-15'
-            aluperc:
-              type: object
-              properties:
-                info_vda:
-                  type: boolean
-                  description: Proposta Informa Venda
-                  example: true
-                perc:
-                  type: number
-                  description: Percentual do Aluguel Complementar da Proposta
-                  example: 7.58 
-            cond_esps:
-              type: object
-              properties:
-                carencia:
-                  type: integer
-                  description: Dias de Carencia
-                  example: 90
-                encargo:
-                  type: number
-                  description: Encargo
-                  example: 654.79
-                fpp:
-                  type: number
-                  description: Fundo de Promoção
-                  example: 321.24
-                fpp_perc:
-                  type: number
-                  description: Fundo de Promoção em Percentual
-                  example: 8.21
-            perc_alus:
-              type: object
-              properties:
-                maio50:
-                  type: boolean
-                  description: Acrescimo de 50% no Aluguel Minimo
-                  example: false
-                novembro50:
-                  type: boolean
-                  description: Acrescimo de 50% no Aluguel Minimo
-                  example: false
-                dezembro100:
-                  type: boolean
-                  description: Acrescimo de 100% no Aluguel Minimo
-                  example: false
-        pessoas:
-          type: array
-          items:
-            description: Discriminador no campo pessoa_tipo
-            oneOf:
-              - $ref: "#/components/schemas/pessoa_fisica"
-              - $ref: "#/components/schemas/pessoa_juridica"
-            discriminator:
-              propertyName: pessoa_tipo
-    #* Corpo da Ocupação da LUC
-    luc_ocupacao:
-      title: Ocupação da LUC
-      type: object
-      properties:
-        luc_cod:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID do ator/atriz
+                readOnly: true
+                example: 1
+              name:
+                type: string
+                description: Nome do ator/atriz
+                maxLength: 100
+                example: 'Nome ator'
+              role:
+                type: string
+                description: Papel do ator/atriz
+                maxLength: 100
+                example: 'Protagonista'
+        created_at:
           type: string
-          description: Codigo da LUC
-          maxLength: 10
-          example: '041'
-        luc_pri:
-          type: boolean
-          description: Luc Principal
-          example: true
-        data_ini:
-          type: string
-          description: Data de Inicio de Ocupação (YYYY-MM-DD)
-          example: '2003-05-16'
-        data_fin:
-          type: string
-          description: Data de Fim de Ocupação (YYYY-MM-DD)<br/><i>Quando o contrato possui prazo indeterminado, a LUC também deve possuir.<br/><i>Para informar LUC com prazo indeterminado, informar o valor zerado (0).</i>
-          example: '2025-05-15'
-    #* Corpo da Marca da Proposta
-    marca_proposta:
-      title: Marca da Proposta
-      type: object
-      properties:
-        marca_nome:
-          type: string
-          description: Nome da Marca
-          maxLength: 50
-          example: Exemplo 1
-        marca_mnemonico:
-          type: string
-          description: Mnemonico da Marca
-          maxLength: 8
+          description: Data de criação do filme
           readOnly: true
-          example: EX1
-        marca_ativa:
-          type: boolean
-          description: Status da Marca
+          example: ''
+        updated_at:
+          type: string
+          description: Data de atualização do filme
           readOnly: true
-          example: true
-    #* Corpo de Pessoa Física
-    pessoa_fisica:
-      title: Pessoa Fisica
+          example: ''
+
+    vote:
+      title: Voto
       type: object
       properties:
-        pessoa_tipo:
+        id:
+          type: integer
+          description: ID do voto
+          readOnly: true
+          example: 1
+        user_id:
+          type: integer
+          description: ID do usuário
+          readOnly: true
+          example: 1
+        movie_id:
+          type: integer
+          description: ID do filme
+          readOnly: true
+          example: 1
+        vote:
+          type: integer
+          description: Voto do usuário (de 0 até 4)
+          example: 4
+        created_at:
           type: string
-          description: >
-            Tipo da Pessoa
-              * `J` - Jurídica <br/><br/>
-              * `F` - Físicas <br/><br/>
-          maxLength: 1
-          enum:
-            - J
-            - F
-          example: F
-        pessoa_cod:
+          description: Data da realização do voto
+          readOnly: true
+          example: ''
+        updated_at:
           type: string
-          description: CPF / CNPJ da Pessoa
-          maxLength: 11
-          example: "11122233344"
-        pessoa_nome:
-          type: string
-          description: Nome da Pessoa / Razão Social
-          maxLength: 50
-          example: Antonio Manuel Silva Gomes Perico
-        pessoa_nacionalidade:
-          type: string
-          description: Nacionalidade da Pessoa
-          maxLength: 15
-          example: Brasileiro
-        estado_civil:
-          type: string
-          description: >
-            Estado Civil da Pessoa Física
-              * `S` - Solteiro(a) <br/><br/>
-              * `C` - Casado(a) <br/><br/>
-              * `V` - Viuvo(a) <br/><br/>
-              * `J` - Separado(a) Judicialmente <br/><br/>
-          enum:
-            - S
-            - C
-            - V
-            - J
-          maxLength: 1
-          example: S
-        profissao:
-          type: string
-          description: Profissão da Pessoa Física
-          maxLength: 20
-          example: Contador
-        identificacao:
-          type: string
-          description: RG da Pessoa Física
-          maxLength: 25
-          example: '1133333322'
-        orgao_expedicao:
-          type: string
-          description: Orgão de Expedição da Pessoa Física
-          maxLength: 25
-          example: SSPSP
-        data_expedicao:
-          type: string
-          description: Data de Expedição da Pessoa Física (YYYY-MM-DD)
-          example: '2002-12-28'
-        data_nascimento:
-          type: string
-          description: Data de Nascimento da Pessoa Física (YYYY-MM-DD)
-          example: '2002-12-28'
-        qualificacao:
-          type: object
-          properties:
-            locatario:
-              type: boolean
-              description: Qualificação de Locatário
-              example: true
-            fiador:
-              type: boolean
-              description: Qualificação de Fiador
-              example: true
-            representante:
-              type: boolean
-              description: Qualificação de Representante Legal
-              example: true
-            sacado:
-              type: boolean
-              description: Qualificação de Sacado
-              example: true
-            email:
-              type: boolean
-              description: Qualificação de Email para envio de boleto
-              example: true
-            sublocario:
-              type: boolean
-              description: Qualificação de Sublocatário
-              example: true
-        endereco:
-          type: object
-          properties:
-            cep:
-              type: string
-              description: CEP da Pessoa
-              maxLength: 8
-              example: '20040001'
-            endereco:
-              type: string
-              description: Endereço da Pessoa
-              maxLength: 30
-              example: Avenida Rio Branco
-            numero:
-              type: string
-              description: Numero do Endereço da Pessoa
-              maxLength: 10
-              example: '110'
-            complemento:
-              type: string
-              description: Complemento do Endereço da Pessoa
-              maxLength: 30
-              example: 10° Andar
-            bairro:
-              type: string
-              description: Bairro do Endereço da Pessoa
-              maxLength: 25
-              example: Centro
-            ibge_cod:
-              type: string
-              description: Código do IBGE
-              example: 04557
-            cidade:
-              type: string
-              description: Cidade da Pessoa
-              maxLength: 40
-              example: Rio de Janeiro
-            estado:
-              type: string
-              description: Sigla do Estado da Pessoa
-              maxLength: 2
-              example: RJ
-        contato:
-          type: object
-          properties:
-            telefone_ddd:
-              type: integer
-              description: DDD do Telefone da Pessoa
-              example: 21
-            telefone_numero:
-              type: integer
-              description: Numero do Telefone da Pessoa
-              example: 99999991
-            fax_ddd:
-              type: integer
-              description: DDD do Fax da Pessoa
-              example: 21
-            fax_numero:
-              type: integer
-              description: Numero do Fax da Pessoa
-              example: 999999991
-            celular_ddd:
-              type: integer
-              description: DDD do Celular da Pessoa
-              example: 21
-            celular_numero:
-              type: integer
-              description: Numero do Celular da Pessoa
-              example: 999999991
-            telcomercial_ddd:
-              type: integer
-              description: DDD do Telefone Comercial da Pessoa
-              example: 21
-            telcomercial_numero:
-              type: integer
-              description: Numero do Telefone Comercial da Pessoa
-              example: 999999991
-            telefone2_ddd:
-              type: integer
-              description: DDD do Telefone 2 da Pessoa
-              example: 21
-            telefone2_numero:
-              type: integer
-              description: Numero do Telefone 2 da Pessoa
-              example: 99999991
-            celular2_ddd:
-              type: integer
-              description: DDD do Celular 2 da Pessoa
-              example: 21
-            celular2_numero:
-              type: integer
-              description: Numero do Celular 2 da Pessoa
-              example: 999999991
-            email:
-              type: string
-              description: Email da Pessoa
-              maxLength: 100
-              example: teste@teste.com
-    #* Corpo de Pessoa Juridica
-    pessoa_juridica:
-      title: Pessoa Juridica
-      type: object
-      properties:
-        pessoa_tipo:
-          type: string
-          description: >
-            Tipo da Pessoa
-              * `J` - Jurídica <br/><br/>
-              * `F` - Físicas <br/><br/>
-          maxLength: 1
-          enum:
-            - J
-            - F
-          example: J
-        pessoa_cod:
-          type: string
-          description: CPF / CNPJ da Pessoa
-          maxLength: 14
-          example: "11222333444455"
-        pessoa_nome:
-          type: string
-          description: Nome da Pessoa / Razão Social
-          maxLength: 50
-          example: Banco do Brasil
-        inscricao_estadual:
-          type: string
-          description: Inscrição Estadual
-          maxLength: 15
-          example: "99999999"
-        inscricao_municipal:
-          type: string
-          description: Inscrição Municipal
-          maxLength: 15
-          example: "9999999"
-        qualificacao:
-          type: object
-          properties:
-            locatario:
-              type: boolean
-              description: Qualificação de Locatário
-              example: true
-            fiador:
-              type: boolean
-              description: Qualificação de Fiador
-              example: true
-            representante:
-              type: boolean
-              description: Qualificação de Representante Legal
-              example: true
-            sacado:
-              type: boolean
-              description: Qualificação de Sacado
-              example: true
-            email:
-              type: boolean
-              description: Qualificação de Email para envio de boleto
-              example: true
-            sublocario:
-              type: boolean
-              description: Qualificação de Sublocatário
-              example: true
-        endereco:
-          type: object
-          properties:
-            cep:
-              type: string
-              description: CEP da Pessoa
-              maxLength: 8
-              example: '20040001'
-            endereco:
-              type: string
-              description: Endereço da Pessoa
-              maxLength: 30
-              example: Avenida Rio Branco
-            numero:
-              type: string
-              description: Numero do Endereço da Pessoa
-              maxLength: 10
-              example: '110'
-            complemento:
-              type: string
-              description: Complemento do Endereço da Pessoa
-              maxLength: 30
-              example: 10° Andar
-            bairro:
-              type: string
-              description: Bairro do Endereço da Pessoa
-              maxLength: 25
-              example: Centro
-            ibge_cod:
-              type: string
-              description: Código do IBGE
-              example: 04557
-            cidade:
-              type: string
-              description: Cidade da Pessoa
-              maxLength: 40
-              example: Rio de Janeiro
-            estado:
-              type: string
-              description: Sigla do Estado da Pessoa
-              maxLength: 2
-              example: RJ
-        contato:
-          type: object
-          properties:
-            telefone_ddd:
-              type: integer
-              description: DDD do Telefone da Pessoa
-              example: 21
-            telefone_numero:
-              type: integer
-              description: Numero do Telefone da Pessoa
-              example: 99999991
-            fax_ddd:
-              type: integer
-              description: DDD do Fax da Pessoa
-              example: 21
-            fax_numero:
-              type: integer
-              description: Numero do Fax da Pessoa
-              example: 999999991
-            celular_ddd:
-              type: integer
-              description: DDD do Celular da Pessoa
-              example: 21
-            celular_numero:
-              type: integer
-              description: Numero do Celular da Pessoa
-              example: 999999991
-            email:
-              type: string
-              description: Email da Pessoa
-              maxLength: 100
-              example: teste@teste.com
+          description: Data da última atualização do voto
+          readOnly: true
+          example: ''  

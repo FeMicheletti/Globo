@@ -31,7 +31,7 @@ export class MovieService {
 
         var cSql =  "SELECT "
                         +"`id`, "
-                        +"`movie_id`, "
+                        // +"`movie_id`, "
                         +"`actor_name`, "
                         +"`role` "
                     +"FROM "

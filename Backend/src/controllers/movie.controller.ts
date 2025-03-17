@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { MovieService } from '../services/movie.service';
 import { VoteService } from '../services/vote.service';
+import { conflictReturn } from '../support/support';
 
 export class MovieController {
     static async getAllMovies(req: Request, res: Response): Promise<void> {
@@ -16,9 +17,9 @@ export class MovieController {
         var movieInfo = await MovieService.getMovie('title = ?', [ title ]);
 
         if (movieInfo.length != 0) {
-            movieInfo[0].cast = MovieService.getMovieCast(movieInfo[0].id);
-            res.status(409).json(movieInfo[0]);
-            return;
+            // movieInfo[0].cast = MovieService.getMovieCast(movieInfo[0].id);
+            // res.status(409).json(movieInfo[0]);
+            return conflictReturn(res);
         }
 
         //* Converte release para date
@@ -57,9 +58,9 @@ export class MovieController {
         var movieInfo = await MovieService.getMovie('title = ?', [ title ]);
 
         if (movieInfo.length != 0 && movieInfo[0].id != movie_id) {
-            movieInfo[0].cast = await MovieService.getMovieCast(movieInfo[0].id);
-            res.status(409).json(movieInfo[0]);
-            return;
+            // movieInfo[0].cast = await MovieService.getMovieCast(movieInfo[0].id);
+            // res.status(409).json(movieInfo[0]);
+            return conflictReturn(res);
         }
 
         //* Converte release para date
