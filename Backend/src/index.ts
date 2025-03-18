@@ -5,15 +5,24 @@ import { authenticateToken } from './middleware/auth.middleware';
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
 import movieRoutes from './routes/movie.routes';
+import cors from 'cors';
 
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT;
 
+//* Configuraão do CORS para realizar as requisições do front
+const corsOptions = {
+	origin: process.env.FRONTURL,
+	methods: ['GET', 'POST', 'PUT', 'DELETE'],
+	allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 //* Inicia a conexão do banco
 new Database();
 
+app.use(cors(corsOptions));
 app.use(express.json());
 
 //* Rotas referentes a autenticação

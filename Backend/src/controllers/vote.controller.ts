@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { VoteService } from '../services/vote.service';
+import { badrequestReturn } from '../support/support';
 
 export class VoteController {
     static async makeVote(req: Request, res: Response): Promise<void> {
@@ -8,6 +9,8 @@ export class VoteController {
         const { vote } = req.body;
 
         const voteInfo = await VoteService.getVotes("user_id = ? AND movie_id = ?", [ user_id, movie_id ]);
+
+        if (vote < 0 || vote > 4) return badrequestReturn(res);
 
         if (voteInfo.length == 0) {
             //* Cria o novo voto do usuário

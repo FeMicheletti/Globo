@@ -35,9 +35,10 @@ export class MovieController {
     }
 
     static async getMovie(req: Request, res: Response): Promise<void> {
-        const movie_id = req.params.id;
+        const user_id = req.tokenJWT.userId;
+        const movie_id = Number(req.params.id);
 
-        const movieInfo = await MovieService.getMovie('id = ?', [movie_id]);
+        const movieInfo = (await MovieService.getMovie('id = ?', [ movie_id ]));
         if (movieInfo.length == 0) {
             res.json({});
             return;
@@ -46,6 +47,12 @@ export class MovieController {
         const movieCast = await MovieService.getMovieCast(movieInfo[0].id);
 
         movieInfo[0].cast = movieCast;
+
+        var user_vote = await VoteService.getVotes('user_id = ? AND movie_id = ?', [ user_id, movie_id ]);
+        movieInfo[0].vote_user = (user_vote.length != 0 ? user_vote[0].vote : 0);
+
+        var user_avarage = await VoteService.getAvarageVote(movie_id);
+        movieInfo[0].vote_average = user_avarage;
 
         res.json(movieInfo);
     }

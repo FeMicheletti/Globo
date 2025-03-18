@@ -23,6 +23,20 @@ export class VoteService {
         return results;
     }
 
+    static async getAvarageVote(movie_id:number):Promise<number> {
+        var vote_avarage = 0;
+        var totVotes = 0;
+
+        const allVotes = await this.getVotes('movie_id = ?', [ movie_id ]);
+
+        for await (const elVote of allVotes) {
+            totVotes++;
+            vote_avarage += elVote.vote;
+        }
+
+        return (vote_avarage/totVotes);
+    }
+
     static async removeUserVotes(user_id:number): Promise<void> {
         const database = new Database;
 

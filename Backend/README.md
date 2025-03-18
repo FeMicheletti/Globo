@@ -21,6 +21,7 @@ Para o funcionamento do servidor de forma correta é nescessário configurar o a
 
 - PORT (Porta do servidor local)
 - JWT_SECRET (Chave do JWT)
+- FRONTURL (URL do Frontend)
 - DB_HOST (Host do banco de dados)
 - DB_PORT (Porta do banco de dados)
 - DB_NAME (Nome da base no banco de dados)

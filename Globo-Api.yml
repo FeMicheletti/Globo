@@ -447,6 +447,10 @@ components:
           description: Token JWT autenticado
           maxLength: 255
           example: "Token JWT"
+        user_id:
+          type: integer
+          description: ID do usuário
+          example: 1
     
     users:
       title: Usuário

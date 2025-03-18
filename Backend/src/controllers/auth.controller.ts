@@ -27,7 +27,10 @@ export class AuthController {
             }
 
             if (token != "") {
-                res.status(200).json({token: token});
+                res.status(200).json({
+                    token: token,
+                    user_id: userInfo[0].id
+                });
                 return;
             }
         }

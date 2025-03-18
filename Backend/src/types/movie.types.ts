@@ -9,6 +9,8 @@ export interface IMovie {
     cast: object;
     created_at: Date;
     updated_at: Date;
+    vote_user: number | undefined;
+    vote_average: number | undefined;
 }
 
 export interface ICast {
