@@ -48,7 +48,8 @@ export class UserController {
             return conflictReturn(res);
         }
 
-        var cryptoPassword = bcrypt.hashSync(password, 10);
+        var cryptoPassword = "";
+        if (password) cryptoPassword = bcrypt.hashSync(password, 10);
 
         userInfo = await UserService.updateUser(user_id, name, email, cryptoPassword, role, active);
 

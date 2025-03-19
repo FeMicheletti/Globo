@@ -6,6 +6,9 @@ import jwt from 'jsonwebtoken';
 
 export function authenticateToken(req: Request, res: Response, next: NextFunction):void {
     const authHeader = req.headers.authorization;
+
+    if (req.method === 'GET' && req.baseUrl.match(/\/movies.*/) && !authHeader) return next();
+
     if (!authHeader) return unauthorizedReturn(res);
 
     const token = authHeader.split(' ')[1];

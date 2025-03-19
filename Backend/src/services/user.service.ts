@@ -38,9 +38,19 @@ export class UserService {
     static async updateUser(user_id:number, name:string, email:string, password:string, role:string, active:boolean): Promise<IUser[]> {
         const database = new Database;
 
-        var cSql = "UPDATE `users` SET `nome` = ?, `email` = ?, `password` = ?, `role` = ?, `is_active` = ?, updated_at = ? WHERE `id` = ?;"
+        var args =  [name, email, role, active,  getTodayToDB()];
 
-        await database.update(cSql, [name, email, password, role, active,  getTodayToDB(), user_id]);
+        var cSqlPassword = "";
+        if (password != "") {
+            cSqlPassword = ", `password` = ?";
+            args.push(password);
+        }
+
+        args.push(user_id.toString());
+
+        var cSql = "UPDATE `users` SET `nome` = ?, `email` = ? "+cSqlPassword+", `role` = ?, `is_active` = ?, updated_at = ? WHERE `id` = ?;"
+
+        await database.update(cSql, args);
 
         return await this.getUser(false, 'id = ?', [ user_id ]);
     }

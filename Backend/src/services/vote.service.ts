@@ -34,7 +34,7 @@ export class VoteService {
             vote_avarage += elVote.vote;
         }
 
-        return (vote_avarage/totVotes);
+        return (vote_avarage/totVotes)*4;
     }
 
     static async removeUserVotes(user_id:number): Promise<void> {

@@ -10,7 +10,7 @@ export class VoteController {
 
         const voteInfo = await VoteService.getVotes("user_id = ? AND movie_id = ?", [ user_id, movie_id ]);
 
-        if (vote < 0 || vote > 4) return badrequestReturn(res);
+        if (vote < 0 || vote > 1) return badrequestReturn(res);
 
         if (voteInfo.length == 0) {
             //* Cria o novo voto do usuário

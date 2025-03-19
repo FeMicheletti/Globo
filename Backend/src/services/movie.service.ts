@@ -19,7 +19,7 @@ export class MovieService {
                         +"`created_at`, "
                         +"`updated_at` "
                     +"FROM "
-                        +"`movies` "
+                        +"`movies` mov "
                     +filter+";";
         const results = await database.select(cSql, params);
 
@@ -58,7 +58,7 @@ export class MovieService {
 
         for await (const elCast of cast) {
             var cSql = "INSERT INTO `movie_cast` (`movie_id`, `actor_name`, `role`) VALUES (?, ?, ?);"
-            await database.insert(cSql, [ movie_id, elCast.name, elCast.role ]);
+            await database.insert(cSql, [ movie_id, elCast.actor_name, elCast.role ]);
         }
 
         return await this.getMovieCast(movie_id);
