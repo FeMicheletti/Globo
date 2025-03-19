@@ -101,7 +101,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/users'
+              $ref: '#/components/schemas/users_requestbodyPost'
       responses:
         '201':
           description: Novo usuário criado com sucesso
@@ -230,7 +230,7 @@ paths:
           content:
             application/json:
               schema: 
-                $ref: '#/components/schemas/movie_cast'
+                $ref: '#/components/schemas/movie_cast_return'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -255,7 +255,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/movie_cast'
+                $ref: '#/components/schemas/movie_cast_return'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -282,7 +282,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/movie_cast'
+                $ref: '#/components/schemas/movie_cast_return'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -307,7 +307,7 @@ paths:
           $ref: '#/components/responses/401'
         '500':
           $ref: '#/components/responses/500'
-      
+
   #* Votos
   /movies/{movie_id}/vote:
     parameters:
@@ -437,7 +437,6 @@ components:
           writeOnly: true
           maxLength: 100
           example: 'Admin123'
-
     login: 
       title: Login
       type: object
@@ -451,8 +450,68 @@ components:
           type: integer
           description: ID do usuário
           example: 1
-    
+        role:
+          type: string
+          description: >
+            Cargo do usuário
+              * `user` - Usuário normal <br/><br/>
+              * `admin` - Usuário administrador <br/><br/>
+          enum:
+            - user
+            - admin
+          maxLength: 5
+          example: admin
     users:
+      title: Usuário
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do usuário
+          readOnly: true
+          example: 1
+        nome:
+          type: string
+          description: Nome do usuário
+          maxLength: 100
+          example: 'Admin'
+        email:
+          type: string
+          description: Email do usuário
+          maxLength: 100
+          example: 'admin@example.com'
+        password:
+          type: string
+          description: Senha do usuário (No PUT ele pode não ser passado para não atualizar)
+          writeOnly: true
+          maxLength: 100
+          example: 'Admin123'
+        role:
+          type: string
+          description: >
+            Cargo do usuário
+              * `user` - Usuário normal <br/><br/>
+              * `admin` - Usuário administrador <br/><br/>
+          enum:
+            - user
+            - admin
+          maxLength: 5
+          example: admin
+        is_active:
+          type: integer
+          description: Status do usuário
+          example: 1
+        created_at:
+          type: string
+          description: Data de criação do usuário
+          readOnly: true
+          example: '2025-03-19T06:22:09.000Z'
+        updated_at:
+          type: string
+          description: Data da última atualização do usuário
+          readOnly: true
+          example: '2025-03-19T06:22:09.000Z'
+    users_requestbodyPost:
       title: Usuário
       type: object
       properties:
@@ -488,21 +547,16 @@ components:
             - admin
           maxLength: 5
           example: admin
-        is_active:
-          type: integer
-          description: Status do usuário
-          example: 1
         created_at:
           type: string
           description: Data de criação do usuário
           readOnly: true
-          example: ''
+          example: '2025-03-19T06:22:09.000Z'
         updated_at:
           type: string
           description: Data da última atualização do usuário
           readOnly: true
-          example: ''
-
+          example: '2025-03-19T06:22:09.000Z'
     movies:
       title: Filmes
       type: object
@@ -534,17 +588,12 @@ components:
           example: 'Ação'
         release:
           type: integer
-          description: Data de lançamento do filme (Em unix timestamp)
-          example: 1579280447
+          description: Data de lançamento do filmes
+          example: "2025-03-19T06:22:09.000Z"
         synopsis:
           type: string
           description: Sinopse do filme
           example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        user_vote:
-          type: integer
-          description: Voto do usuário (de 0 a 4)
-          readOnly: true
-          example: 4
         vote_avarage:
           type: integer
           description: Média de votos dos usuários
@@ -554,13 +603,12 @@ components:
           type: string
           description: Data de criação do filme
           readOnly: true
-          example: ''
+          example: '2025-03-19T06:22:09.000Z'
         updated_at:
           type: string
           description: Data de atualização do filme
           readOnly: true
-          example: ''
-
+          example: '2025-03-19T06:22:09.000Z'
     movie_cast:
       title: Filmes com o elenco
       type: object
@@ -608,7 +656,7 @@ components:
                 description: ID do ator/atriz
                 readOnly: true
                 example: 1
-              name:
+              actor_name:
                 type: string
                 description: Nome do ator/atriz
                 maxLength: 100
@@ -622,13 +670,89 @@ components:
           type: string
           description: Data de criação do filme
           readOnly: true
-          example: ''
+          example: '2025-03-19T06:22:09.000Z'
         updated_at:
           type: string
           description: Data de atualização do filme
           readOnly: true
-          example: ''
-
+          example: '2025-03-19T06:22:09.000Z'
+    movie_cast_return:
+      title: Filmes com o elenco
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID do filme
+          readOnly: true
+          example: 1
+        created_by:
+          type: integer
+          description: ID do usuário que criou esse registro
+          readOnly: true
+          example: 1
+        title: 
+          type: string
+          description: Titulo do filme
+          maxLength: 255
+          example: 'Titulo do Filme'
+        director:
+          type: string
+          description: Diretor do filme
+          maxLength: 100
+          example: 'Diretor do filme'
+        genre:
+          type: string
+          description: Genêro do filme
+          maxLength: 100
+          example: 'Ação'
+        release:
+          type: string
+          description: Data de lançamento do filme
+          example: "2025-03-19T06:22:09.000Z"
+        synopsis:
+          type: string
+          description: Sinopse do filme
+          example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        cast:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID do ator/atriz
+                readOnly: true
+                example: 1
+              actor_name:
+                type: string
+                description: Nome do ator/atriz
+                maxLength: 100
+                example: 'Nome ator'
+              role:
+                type: string
+                description: Papel do ator/atriz
+                maxLength: 100
+                example: 'Protagonista'
+        created_at:
+          type: string
+          description: Data de criação do filme
+          readOnly: true
+          example: '2025-03-19T06:22:09.000Z'
+        updated_at:
+          type: string
+          description: Data de atualização do filme
+          readOnly: true
+          example: '2025-03-19T06:22:09.000Z'
+        vote_user:
+          type: number
+          description: Voto do usuário Logado
+          readOnly: true
+          example: 4
+        vote_average:
+          type: number
+          description: Média de votos
+          readOnly: true
+          example: 4
     vote:
       title: Voto
       type: object
@@ -656,9 +780,9 @@ components:
           type: string
           description: Data da realização do voto
           readOnly: true
-          example: ''
+          example: '2025-03-19T06:22:09.000Z'
         updated_at:
           type: string
           description: Data da última atualização do voto
           readOnly: true
-          example: ''  
+          example: '2025-03-19T06:22:09.000Z'  

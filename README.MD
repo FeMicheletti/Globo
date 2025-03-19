@@ -49,3 +49,5 @@ Construir um ambiente de comunicação entre o Frontend e o Backend para o site 
 6. Documentação em Markdown do backend, com informações para configuração e Postman para testes (Está na raiz junto com o ERD e a Documentação OpenApi)
 7. Criação do desenho da tela no moqups
 8. Criação da estrutura do backend, com suas rotas
+9. Foi utilizado o novo sistema de rotas do Next.JS para melhor fluidez das telas
+10. O backend teve alguns ajustes, juntamente com a sua documentação em OpenAPI

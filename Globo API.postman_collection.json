@@ -134,7 +134,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "5"
+									"value": "1"
 								}
 							]
 						}
@@ -148,7 +148,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"admin\",\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"Admin123\",\r\n    \"role\": \"admin\",\r\n    \"active\": true\r\n}",
+							"raw": "{\r\n    \"name\": \"admin\",\r\n    \"email\": \"admin@gmail.com\",\r\n    \r\n    \"role\": \"admin\",\r\n    \"active\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -227,7 +227,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Inception\",\r\n    \"director\": \"Christopher Nolan\",\r\n    \"genre\": \"Sci-fi\",\r\n    \"synopsis\": \"Loren Ipsun\",\r\n    \"release\": 1268771327,\r\n    \"cast\": [\r\n        {\r\n           \"name\": \"A\",\r\n           \"role\": \"teste\" \r\n        },\r\n        {\r\n           \"name\": \"B\",\r\n           \"role\": \"nao teste\" \r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"title\": \"Inception1\",\r\n    \"director\": \"Christopher Nolan\",\r\n    \"genre\": \"Sci-fi\",\r\n    \"synopsis\": \"Loren Ipsun\",\r\n    \"release\": 1268771327,\r\n    \"cast\": [\r\n        {\r\n           \"actor_name\": \"A\",\r\n           \"role\": \"teste\" \r\n        },\r\n        {\r\n           \"actor_name\": \"B\",\r\n           \"role\": \"nao teste\" \r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -263,7 +263,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "3"
 								}
 							]
 						}
@@ -277,7 +277,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Inception\",\r\n    \"director\": \"Christopher Nolan\",\r\n    \"genre\": \"Sci-fi\",\r\n    \"synopsis\": \"Loren Ipsun\",\r\n    \"release\": 1268771327,\r\n    \"cast\": [\r\n        {\r\n           \"name\": \"C\",\r\n           \"role\": \"teste22\" \r\n        },\r\n        {\r\n           \"name\": \"D\",\r\n           \"role\": \"nao teste sei la\" \r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"title\": \"Inception2\",\r\n    \"director\": \"Christopher Nolan\",\r\n    \"genre\": \"Sci-fi\",\r\n    \"synopsis\": \"Loren Ipsun\",\r\n    \"release\": 1268771327,\r\n    \"cast\": [\r\n        {\r\n           \"actor_name\": \"C\",\r\n           \"role\": \"teste22\" \r\n        },\r\n        {\r\n           \"actor_name\": \"D\",\r\n           \"role\": \"nao teste sei la\" \r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -296,7 +296,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "3"
 								}
 							]
 						}
@@ -339,7 +339,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"vote\": 4\r\n}",
+							"raw": "{\r\n    \"vote\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -359,7 +359,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "3"
 								}
 							]
 						}
@@ -374,7 +374,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0MjE1NDc5N30.dqfu0ssuAW6Up9DnfIe28iSPnwfa5WJq1QH4YqU_QVU",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0MjM5MjYyN30.ZcP3dxHq3uXOT7vptQA5kZ847za2XcaIoBksCXDqpbw",
 				"type": "string"
 			}
 		]
