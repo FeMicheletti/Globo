@@ -17,27 +17,22 @@
 
 ## Configurando o ambiente
 ### Arquivo .env
-Para o funcionamento do servidor de forma correta é nescessário configurar o arquivo .env com as seguintes variáveis
+* Para o funcionamento do servidor de forma correta é nescessário configurar o arquivo .env com as seguintes variáveis
+    - PORT (Porta do servidor local)
+    - JWT_SECRET (Chave do JWT)
+    - FRONTURL (URL do Frontend)
+    - DB_HOST (Host do banco de dados)
+    - DB_PORT (Porta do banco de dados)
+    - DB_NAME (Nome da base no banco de dados)
+    - DB_USER (Nome do usuário do banco de dados)
+    - DB_PASSWORD (Senha do usuário do banco de dados)
 
-- PORT (Porta do servidor local)
-- JWT_SECRET (Chave do JWT)
-- FRONTURL (URL do Frontend)
-- DB_HOST (Host do banco de dados)
-- DB_PORT (Porta do banco de dados)
-- DB_NAME (Nome da base no banco de dados)
-- DB_USER (Nome do usuário do banco de dados)
-- DB_PASSWORD (Senha do usuário do banco de dados)
-
-### Configuração do ambiente
-Assim como em qualquer outro projeto, para configurar todos os pacotes é nescessário executar o 
-
-```npm i```
+### Configuração das dependências
+* Assim como em qualquer outro projeto, para configurar todos os pacotes é nescessário executar o ```npm i```
 
 ### Configuração do Knex
-Para a utilização do knex de forma prática, é nescessário rodar o seguinte comando
+* Para a utilização do knex de forma prática, é nescessário rodar o seguinte comando ```npm install knex -g```
+* Ao realizar esse comando, será possível realizar o migration executando o seguinte comando ```knex migrate:up```
 
-```npm install knex -g```
-
-Ao realizar esse comando, será possível realizar o migration executando o seguinte comando
-
-```knex migrate:up```
+### Iniciando o servidor
+* Para iniciar o servidor basta rodar ```npm start```
