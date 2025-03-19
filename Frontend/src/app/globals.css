@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+:root {
+	--background: #ffffff;
+	--foreground: #171717;
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #232323;
+		--foreground: #ededed;
+	}
+}
+
+body {
+	background: var(--background);
+	color: var(--foreground);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Layout Style */
+.appLayout {
+	width: 100%;
+	height: 100%;
+	transition: filter 0.3s ease;
+	padding: 20px;
+	margin-left: 0;
+}
+
+.appLayout.blur {
+	filter: blur(4px);
+}
+
+/* Header Style  */
+.headerMain {
+	width: 100%;
+	background-color: #444444;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.headerImage {
+	cursor: pointer;
+}
+
+.headerButton {
+	position: absolute;
+	cursor: pointer;
+	left: 15px;
+}
+
+/* Circulos verde ou vermelhos */
+.green-circle {
+	width: 15px;
+	height: 15px;
+	background-color: green;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.green-circle.click:hover {
+	opacity: 80%;
+	border-color: black;
+	border-width: 2px;
+}
+
+.red-circle {
+	width: 15px;
+	height: 15px;
+	background-color: red;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.red-circle.click:hover {
+	opacity: 80%;
+	border-color: black;
+	border-width: 2px;
+}

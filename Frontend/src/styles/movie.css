@@ -1,0 +1,120 @@
+.divAverage {
+    display: flex;
+    justify-content: space-around;
+    margin-left: 10px;
+}
+
+.divContainerAvarage {
+    display: flex;
+    flex-direction: row;
+}
+
+.divUserAvarage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.likeUserAvarage {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.likeUserAvarage.green {
+    color: green;
+}
+.likeUserAvarage.red {
+    color: red;
+}
+
+.divContainerMovie {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    height: 90vh;
+    width: 60%;
+}
+
+.divMainInformation {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.divTitMovie {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.divInputMovie {
+    margin-left: 30px;
+    margin-top: 5px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    > textarea, > input {
+        margin-bottom: 5px;
+        background-color: white;
+        color: black;
+        border-radius: 5px;
+        width: 400px;
+        padding-left: 5px;
+    }
+    > label {
+        min-width: 70px;
+        margin-right: 10px;
+        text-align: left;
+    }
+}
+
+input[type="date"] {
+    margin-bottom: 5px;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    width: 150px;
+    padding-left: 5px;
+}
+
+.fieldsetCast {
+    margin-left: 30px;
+    border-width: 2px;
+    border-style: groove;
+    border-color: "threedface";
+    border-image: initial;
+    padding-block: 0.35em 0.625em;
+    padding-inline: 0.75em;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.labelFieldSetCast {
+    margin-left: 20px;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.buttonFieldsetCast {
+    background-color: white;
+    color: black;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.buttonSave {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    width: 100px;
+    border-radius: 5px;
+    margin-right: 250px;
+    cursor: pointer;
+}
