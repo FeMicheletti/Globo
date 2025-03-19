@@ -19,7 +19,7 @@ export class VoteController {
         } else {
             //* Atualiza o voto do usuário
             var result = await VoteService.updateVote(voteInfo[0].id, vote);
-            res.status(200).json(result);
+            res.status(200).json(result[0]);
         }
     }
 }

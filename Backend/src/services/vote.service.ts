@@ -72,6 +72,6 @@ export class VoteService {
 
         await database.update(cSql, [vote, getTodayToDB(), vote_id]);
 
-        return await this.getVotes("id", [ vote_id ]);
+        return await this.getVotes("id = ?", [ vote_id ]);
     }
 }
